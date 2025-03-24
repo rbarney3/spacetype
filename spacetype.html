@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Outer Space Typing</title>
+    <style>
+        body {
+            text-align: center;
+            font-family: Arial, sans-serif;
+            background-color: black;
+            color: white;
+        }
+        .word {
+            font-size: 48px;
+            font-weight: bold;
+            margin: 20px;
+        }
+        .input-box {
+            font-size: 36px;
+            text-align: center;
+            padding: 10px;
+            margin: 20px;
+        }
+        .keyboard {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 20px auto;
+        }
+        .row {
+            display: flex;
+            justify-content: center;
+            margin: 5px 0;
+        }
+        .key {
+            font-size: 24px;
+            padding: 15px;
+            background: gray;
+            border-radius: 5px;
+            text-align: center;
+            cursor: pointer;
+            user-select: none;
+            width: 40px;
+            margin: 2px;
+        }
+        .key:active {
+            background: lightgray;
+        }
+        .score {
+            font-size: 24px;
+            margin: 20px;
+        }
+        .button {
+            font-size: 20px;
+            padding: 10px;
+            margin: 10px;
+            cursor: pointer;
+            background: darkgray;
+            border: none;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <h1>🌙✨🚀 Outer Space Typing 🚀✨🌙</h1>
+    <div id="word" class="word"></div>
+    <input id="input" class="input-box" type="text" disabled>
+    <div class="score">Words Typed: <span id="score">0</span></div>
+    <div class="keyboard" id="keyboard"></div>
+    <button class="button" onclick="resetScore()">Reset Score</button>
+    <script>
+        const words = ["space", "moon", "the", "see", "far", "go", "trip", "rocket"];
+        let currentWord = "";
+        let score = 0;
+        const wordElement = document.getElementById("word");
+        const inputElement = document.getElementById("input");
+        const keyboardElement = document.getElementById("keyboard");
+        const scoreElement = document.getElementById("score");
+        const rows = [
+            "qwertyuiop".split(""),
+            "asdfghjkl".split(""),
+            "zxcvbnm".split("")
+        ];
+        
+        function getRandomWord() {
+            return words[Math.floor(Math.random() * words.length)];
+        }
+        
+        function displayNewWord() {
+            currentWord = getRandomWord();
+            wordElement.textContent = currentWord;
+            inputElement.value = "";
+        }
+        
+        function createKeyboard() {
+            rows.forEach(row => {
+                const rowDiv = document.createElement("div");
+                rowDiv.classList.add("row");
+                row.forEach(letter => {
+                    const key = document.createElement("div");
+                    key.textContent = letter;
+                    key.classList.add("key");
+                    key.onclick = () => typeLetter(letter);
+                    rowDiv.appendChild(key);
+                });
+                keyboardElement.appendChild(rowDiv);
+            });
+            
+            const backspaceRow = document.createElement("div");
+            backspaceRow.classList.add("row");
+            
+            const backspaceKey = document.createElement("div");
+            backspaceKey.textContent = "←";
+            backspaceKey.classList.add("key");
+            backspaceKey.onclick = deleteLetter;
+            backspaceRow.appendChild(backspaceKey);
+            
+            keyboardElement.appendChild(backspaceRow);
+        }
+        
+        function typeLetter(letter) {
+            inputElement.value += letter;
+            if (inputElement.value === currentWord) {
+                score++;
+                scoreElement.textContent = score;
+                setTimeout(displayNewWord, 1000);
+            }
+        }
+        
+        function deleteLetter() {
+            inputElement.value = inputElement.value.slice(0, -1);
+        }
+        
+        function resetScore() {
+            score = 0;
+            scoreElement.textContent = score;
+        }
+        
+        createKeyboard();
+        displayNewWord();
+    </script>
+</body>
+</html>
+
+ 
